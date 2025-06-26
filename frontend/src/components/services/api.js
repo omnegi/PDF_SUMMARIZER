@@ -1,4 +1,4 @@
-const API_BASE_URL = 'http://localhost:8000';
+const API_BASE_URL = 'https://pdf-summarizer-rddj.onrender.com';
 
 export const uploadPDF = async (file) => {
   const formData = new FormData();
