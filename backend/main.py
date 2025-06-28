@@ -113,10 +113,3 @@ async def chat(message: ChatMessage):
     except Exception as e:
         raise HTTPException(status_code=500, detail=str(e))
 
-@app.post("/reset/")
-async def reset_conversation():
-    global conversation_history, qa_chain, vector_store
-    conversation_history = []
-    qa_chain = None
-    vector_store = None
-    return {"status": "conversation reset"}
