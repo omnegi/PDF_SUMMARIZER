@@ -16,7 +16,7 @@ function App() {
         <Header />
         <Detail />
 
-        {/* PDFUploader Full Width */}
+  
         <div className="w-full animate-slide-in mt-6 p-6 bg-gradient-to-br from-blue-50 via-purple-50 to-pink-50 ">
           <div className='border-2 border-dotted border-indigo-500 rounded-lg p-6'>
             <PDFUploader onSummaryGenerated={setSummary} setIsLoading={setIsLoading} />
@@ -28,12 +28,10 @@ function App() {
             </div>
           )}
         </div>
-
-        {/* Summary + Chat Interface Side by Side */}
         {summary && (
           <div className="grid grid-cols-1 lg:grid-cols-2 gap-8 px-6 pb-10 bg-gradient-to-br from-blue-50 via-purple-50 to-pink-50 items-stretch">
 
-            {/* Summary Card */}
+            
             <div className="p-6 rounded-xl border border-white/10 backdrop-blur-md bg-white/5 text-black dark:bg-gray-800 dark:text-white shadow-lg h-full flex flex-col">
               <h2 className="text-2xl font-semibold mb-4 bg-clip-text text-transparent bg-gradient-to-r from-indigo-400 to-purple-500">
                 Generated Summary 🤖
@@ -54,9 +52,6 @@ function App() {
 
               <p className="whitespace-pre-line flex-grow">{summary}</p>
             </div>
-
-
-            {/* Chat Interface */}
             <div className="p-6 h-full">
               <div className="h-full">
                 <ChatInterface summary={summary} />
