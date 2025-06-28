@@ -67,17 +67,14 @@ async def upload_pdf(file: UploadFile = File(...)):
                 chunk_overlap=200
             )
             splits = text_splitter.split_documents(documents)
-           
-            
-           
+               
             embeddings = GoogleGenerativeAIEmbeddings(model="models/embedding-001")
             
         vectorstore = FAISS.from_documents(splits, embeddings)
         
         retriever = vectorstore.as_retriever(search_type="mmr", search_kwargs={"k": 5})
         llm = ChatGoogleGenerativeAI(model="gemini-1.5-flash")
-            
-           
+                     
         qa_chain = ConversationalRetrievalChain.from_llm(llm, retriever=retriever)
            
            
@@ -103,7 +100,7 @@ async def chat(message: ChatMessage):
     
     try:
      
-        response = qa_chain({"question": message.message, "chat_history": conversation_history})
+        response = qa_chain.invoke({"question": message.message, "chat_history": conversation_history})
         
       
         conversation_history.append((message.message, response["answer"]))
