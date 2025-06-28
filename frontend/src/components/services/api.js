@@ -36,8 +36,3 @@ export const sendMessage = async (message) => {
   return data.response;
 };
 
-export const resetConversation = async () => {
-  await fetch(`${API_BASE_URL}/reset/`, {
-    method: 'POST',
-  });
-};
