@@ -46,7 +46,7 @@ function App() {
           </>
         )}
 
-        <Footer />
+      
 
         {/* Summary + Chat Interface Side by Side */}
         {summary && (
@@ -94,7 +94,9 @@ function App() {
             </div>
           </>
         )}
+         <Footer />
       </div>
+       
     </>
   );
 }
