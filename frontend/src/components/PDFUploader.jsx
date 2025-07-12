@@ -55,7 +55,7 @@ const PDFUploader = ({ onSummaryGenerated, setIsLoading }) => {
 
   return (
     <div
-      className={`transition-all duration-200 p-8 text-center rounded-xl border border-white/10 backdrop-blur-md bg-white/5 ${
+      className={`transition-all duration-200 p-8 text-center rounded-xl  bg-blue-900  ${
         dragActive ? 'ring-2 ring-blue-500 ring-offset-2' : ''
       }`}
       onDragEnter={handleDrag}
@@ -78,7 +78,7 @@ const PDFUploader = ({ onSummaryGenerated, setIsLoading }) => {
       <h3 className="text-2xl font-semibold bg-gradient-to-r from-blue-600 to-purple-600 bg-clip-text text-transparent mb-2">
         Upload PDF
       </h3>
-      <p className="text-sm text-gray-600 mb-4">
+    <p className="text-sm text-white/80 mb-4">
         Drag and drop your PDF here or click to browse
       </p>
 
