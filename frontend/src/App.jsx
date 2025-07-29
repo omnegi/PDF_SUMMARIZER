@@ -7,6 +7,7 @@ import { useState } from 'react';
 import Hero from './components/Hero';
 import FAQ from './components/FAQ';
 import Footer from './components/Footer';
+import Markdown from 'react-markdown';
 
 function App() {
   const [summary, setSummary] = useState('');
@@ -72,7 +73,11 @@ function App() {
                   </button>
                 </div>
 
-                <p className="whitespace-pre-line flex-grow">{summary}</p>
+                <p className="whitespace-pre-line flex-grow">
+                  <Markdown>
+                  {summary}
+                  </Markdown>
+                  </p>
               </div>
 
               {/* Chat Interface */}
