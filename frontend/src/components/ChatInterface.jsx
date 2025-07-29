@@ -1,6 +1,7 @@
 import React, { useState, useEffect, useRef } from 'react';
 import { Send } from 'lucide-react';
 import { sendMessage } from './services/api';
+import Markdown from 'react-markdown';
 
 const ChatInterface = ({ summary }) => {
   const [messages, setMessages] = useState([]);
@@ -80,7 +81,9 @@ const ChatInterface = ({ summary }) => {
                 : 'mr-auto bg-white/5 backdrop-blur-md text-black'
             }`}
           >
+            <Markdown>
             {message.text}
+            </Markdown>
           </div>
         ))}
         {isLoading && (
