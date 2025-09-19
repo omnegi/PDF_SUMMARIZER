@@ -12,7 +12,7 @@ from langchain_community.vectorstores import FAISS
 
 app = FastAPI()
 
-# ✅ Load Google API key from environment (don’t hardcode!)
+
 os.environ["GOOGLE_API_KEY"] = "AIzaSyDUadmyLHdvYtlDE3f0kug7V-gRqs0x7gc"
 
 app.add_middleware(
@@ -44,27 +44,27 @@ async def upload_pdf(file: UploadFile = File(...)):
         with open(file_path, "wb") as f:
             f.write(await file.read())
 
-        # Load PDF
+       
         loader = PyPDFLoader(file_path)
         documents = loader.load()
 
-        # Split text
+      
         text_splitter = RecursiveCharacterTextSplitter(
             chunk_size=1000,
             chunk_overlap=200
         )
         splits = text_splitter.split_documents(documents)
 
-        # ✅ Google Embeddings
+       
         embeddings = GoogleGenerativeAIEmbeddings(model="models/embedding-001")
         vector_store = FAISS.from_documents(splits, embeddings)
 
-        # Retriever + Gemini
+        
         retriever = vector_store.as_retriever(search_type="mmr", search_kwargs={"k": 5})
         llm = ChatGoogleGenerativeAI(model="gemini-1.5-flash")
         qa_chain = ConversationalRetrievalChain.from_llm(llm, retriever=retriever)
 
-        # Summary
+       
         summary_prompt = (
             "Summarize the uploaded PDF in detail. "
             "Include all major sections, important points, and technical terms if present."
