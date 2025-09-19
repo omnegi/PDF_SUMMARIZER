@@ -17,7 +17,7 @@ from langchain_community.vectorstores import FAISS
 
 app = FastAPI()
 
-os.environ["GOOGLE_API_KEY"]="AIzaSyAqPijGdgrUTYCfBdEqbEWT__8JX1EgHvw"
+os.environ["GOOGLE_API_KEY"]="AIzaSyD-NYTJK99RhzCXe-Fa2hxBDF38fZj9_8Y"
 app.add_middleware(
     CORSMiddleware,
     allow_origins=["*"],  
