@@ -9,6 +9,7 @@ from langchain.text_splitter import RecursiveCharacterTextSplitter
 from langchain_google_genai import GoogleGenerativeAIEmbeddings, ChatGoogleGenerativeAI
 from langchain.chains import ConversationalRetrievalChain
 from langchain_community.vectorstores import FAISS
+from langchain_community.embeddings import HuggingFaceEmbeddings
 
 app = FastAPI()
 
@@ -56,7 +57,7 @@ async def upload_pdf(file: UploadFile = File(...)):
         splits = text_splitter.split_documents(documents)
 
        
-        embeddings = GoogleGenerativeAIEmbeddings(model="models/embedding-001")
+        embeddings = HuggingFaceEmbeddings(model_name="sentence-transformers/all-MiniLM-L6-v2")
         vector_store = FAISS.from_documents(splits, embeddings)
 
         
