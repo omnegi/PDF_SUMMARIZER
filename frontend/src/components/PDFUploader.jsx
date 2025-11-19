@@ -6,6 +6,7 @@ const PDFUploader = ({ onSummaryGenerated, setIsLoading }) => {
   const [dragActive, setDragActive] = useState(false);
   const [error, setError] = useState('');
   const [selectedFile, setSelectedFile] = useState(null);
+  const [summaryLength, setSummaryLength] = useState('medium');
   const inputRef = useRef(null);
 
   const handleDrag = (e) => {
@@ -42,20 +43,40 @@ const PDFUploader = ({ onSummaryGenerated, setIsLoading }) => {
 
   const handleGenerateSummary = async () => {
     if (!selectedFile) return;
-    setIsLoading(true);
+
+    console.log('Starting summary generation...');
+    console.log('Selected file:', selectedFile.name);
+
     try {
-      const summary = await uploadPDF(selectedFile);
-      onSummaryGenerated(summary);
-    } catch (err) {
-      setError(err.message || 'Failed to process PDF');
+      setIsLoading(true);
+      setError('');
+
+      console.log('Sending request to backend...');
+      const response = await uploadPDF(selectedFile, summaryLength);
+      console.log('Backend response:', response);
+
+      if (response && response.summary) {
+        console.log('Summary received:', response.summary);
+        onSummaryGenerated(response.summary);
+      } else if (response && typeof response === 'string') {
+        console.log('String response received:', response);
+        onSummaryGenerated(response);
+      } else {
+        console.error('Unexpected response format:', response);
+        setError('Unexpected response format from server');
+      }
+    } catch (error) {
+      console.error('Error generating summary:', error);
+      setError(error.message || 'Failed to generate summary. Please try again.');
     } finally {
       setIsLoading(false);
+      console.log('Summary generation completed');
     }
   };
 
   return (
     <div
-      className={`transition-all duration-200 p-8 text-center rounded-xl  bg-blue-900  ${
+      className={`transition-all duration-300 p-8 text-center rounded-xl bg-blue-900/80 backdrop-blur-md ${
         dragActive ? 'ring-2 ring-blue-500 ring-offset-2' : ''
       }`}
       onDragEnter={handleDrag}
@@ -78,16 +99,61 @@ const PDFUploader = ({ onSummaryGenerated, setIsLoading }) => {
       <h3 className="text-2xl font-semibold bg-gradient-to-r from-blue-600 to-purple-600 bg-clip-text text-transparent mb-2">
         Upload PDF
       </h3>
-    <p className="text-sm text-white/80 mb-4">
+    <p className="text-sm text-white/80 mb-4 transition-colors duration-300">
         Drag and drop your PDF here or click to browse
       </p>
 
-      {error && <p className="text-red-500 mb-4">{error}</p>}
+      {error && <p className="text-red-500 mb-4 transition-colors duration-300">{error}</p>}
 
       {selectedFile && (
-        <p className="text-gray-600 mb-4 text-sm">
+        <p className="text-gray-200 mb-4 text-sm transition-colors duration-300">
           📄 Selected File: <strong>{selectedFile.name}</strong>
         </p>
+      )}
+
+      {selectedFile && (
+        <div className="mb-4">
+          <label className="block text-white/90 text-sm font-medium mb-2">
+            Summary Length:
+          </label>
+          <div className="flex flex-wrap gap-2 justify-center">
+            <button
+              onClick={() => setSummaryLength('short')}
+              className={`px-4 py-2 rounded-lg text-sm font-medium transition-all duration-200 ${
+                summaryLength === 'short'
+                  ? 'bg-gradient-to-r from-blue-600 to-purple-600 text-white'
+                  : 'bg-white/20 text-white/80 hover:bg-white/30'
+              }`}
+            >
+              Short
+            </button>
+            <button
+              onClick={() => setSummaryLength('medium')}
+              className={`px-4 py-2 rounded-lg text-sm font-medium transition-all duration-200 ${
+                summaryLength === 'medium'
+                  ? 'bg-gradient-to-r from-blue-600 to-purple-600 text-white'
+                  : 'bg-white/20 text-white/80 hover:bg-white/30'
+              }`}
+            >
+              Medium
+            </button>
+            <button
+              onClick={() => setSummaryLength('long')}
+              className={`px-4 py-2 rounded-lg text-sm font-medium transition-all duration-200 ${
+                summaryLength === 'long'
+                  ? 'bg-gradient-to-r from-blue-600 to-purple-600 text-white'
+                  : 'bg-white/20 text-white/80 hover:bg-white/30'
+              }`}
+            >
+              Long
+            </button>
+          </div>
+          <p className="text-white/60 text-xs mt-2 text-center">
+            {summaryLength === 'short' && 'Quick overview (2-3 paragraphs)'}
+            {summaryLength === 'medium' && 'Balanced summary (4-6 paragraphs)'}
+            {summaryLength === 'long' && 'Detailed analysis (7+ paragraphs)'}
+          </p>
+        </div>
       )}
 
       <button
@@ -102,7 +168,7 @@ const PDFUploader = ({ onSummaryGenerated, setIsLoading }) => {
           onClick={handleGenerateSummary}
           className="bg-gradient-to-r from-blue-600 to-purple-600 text-white px-6 py-2 rounded-lg font-medium hover:opacity-90 mt-4 transition-all duration-200"
         >
-          Generate Summary
+          Generate Summary ({summaryLength.charAt(0).toUpperCase() + summaryLength.slice(1)})
         </button>
       )}
     </div>

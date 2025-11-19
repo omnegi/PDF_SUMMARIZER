@@ -1,1 +1,47 @@
 @import "tailwindcss";
+
+/* Enable dark mode transitions */
+* {
+  transition-property: background-color, border-color, color, fill, stroke;
+  transition-timing-function: cubic-bezier(0.4, 0, 0.2, 1);
+  transition-duration: 300ms;
+}
+
+/* Custom scrollbar styles for summary section */
+.summary-scroll {
+  scrollbar-width: thin;
+  scrollbar-color: #6366f1 #e5e7eb;
+}
+
+.summary-scroll::-webkit-scrollbar {
+  width: 8px;
+}
+
+.summary-scroll::-webkit-scrollbar-track {
+  background: #f3f4f6;
+  border-radius: 10px;
+}
+
+.summary-scroll::-webkit-scrollbar-thumb {
+  background: linear-gradient(180deg, #6366f1, #8b5cf6);
+  border-radius: 10px;
+  transition: background 0.3s ease;
+}
+
+.summary-scroll::-webkit-scrollbar-thumb:hover {
+  background: linear-gradient(180deg, #4f46e5, #7c3aed);
+}
+
+/* Dark mode scrollbar */
+.dark .summary-scroll::-webkit-scrollbar-track {
+  background: #374151;
+}
+
+.dark .summary-scroll {
+  scrollbar-color: #6366f1 #374151;
+}
+
+/* Dark mode body background */
+.dark {
+  color-scheme: dark;
+}
