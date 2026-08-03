@@ -12,6 +12,7 @@ from langchain_community.vectorstores import FAISS
 
 from langchain_groq import ChatGroq
 from langchain.chains import ConversationalRetrievalChain
+import tempfile
 
 # -------------------------
 # Load Environment
@@ -30,7 +31,7 @@ app = FastAPI()
 
 app.add_middleware(
     CORSMiddleware,
-    allow_origins=["https://pdf-summarizer-8n35.vercel.app/"],
+    allow_origins=["https://pdf-summarizer-8n35.vercel.app"],
     allow_credentials=True,
     allow_methods=["*"],
     allow_headers=["*"],
@@ -67,18 +68,19 @@ async def upload_pdf(file: UploadFile = File(...)):
 
     try:
 
+
+
         conversation_history = []
 
-        os.makedirs("uploads", exist_ok=True)
-
-        file_path = os.path.join("uploads", file.filename)
-
-        with open(file_path, "wb") as f:
-            f.write(await file.read())
+        with tempfile.NamedTemporaryFile(delete=False, suffix=".pdf") as temp_file:
+            temp_file.write(await file.read())
+            file_path = temp_file.name
 
         # Load PDF
         loader = PyPDFLoader(file_path)
         docs = loader.load()
+        if os.path.exists(file_path):
+            os.remove(file_path)
 
         # Split Text
         splitter = RecursiveCharacterTextSplitter(
@@ -90,7 +92,8 @@ async def upload_pdf(file: UploadFile = File(...)):
 
         # FastEmbed Embeddings
         embeddings = FastEmbedEmbeddings(
-            model_name="BAAI/bge-small-en-v1.5"
+            model_name="BAAI/bge-small-en-v1.5",
+            cache_dir="/tmp/fastembed"
         )
 
         # Vector DB
