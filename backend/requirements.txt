@@ -5,13 +5,8 @@ python-dotenv
 
 langchain
 langchain-community
-langchain-core
 langchain-groq
 
-sentence-transformers
-transformers
-torch
-
+fastembed
 faiss-cpu
-
 pypdf
