@@ -1,4 +1,4 @@
-const API_BASE_URL = 'https://pdf-summarizer-rddj.onrender.com';
+const API_BASE_URL = 'https://pdf-summarizer-sigma.vercel.app/';
 
 export const uploadPDF = async (file) => {
   const formData = new FormData();
