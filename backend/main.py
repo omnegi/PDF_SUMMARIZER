@@ -17,7 +17,10 @@ from langchain.chains import ConversationalRetrievalChain
 # Load Environment
 # -------------------------
 
+
 load_dotenv()
+
+groq_api_key = os.getenv("GROQ_API_KEY")
 
 # -------------------------
 # FastAPI
@@ -27,7 +30,7 @@ app = FastAPI()
 
 app.add_middleware(
     CORSMiddleware,
-    allow_origins=["*"],
+    allow_origins=["https://pdf-summarizer-8n35.vercel.app/"],
     allow_credentials=True,
     allow_methods=["*"],
     allow_headers=["*"],
@@ -103,6 +106,7 @@ async def upload_pdf(file: UploadFile = File(...)):
 
         # Groq LLM
         llm = ChatGroq(
+            groq_api_key=groq_api_key,
             model="llama-3.3-70b-versatile",
             temperature=0
         )
