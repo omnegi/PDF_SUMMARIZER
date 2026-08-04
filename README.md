@@ -1,7 +1,7 @@
 #📄 AI PDF Summarizer#
 A full-stack application that allows users to upload PDFs, automatically summarizes their content using a Large Language Model (Gemini via LangChain), and enables conversational follow-up querying. Built with FastAPI, React, and Google's Generative AI.
 
-Demo:https://pdf-summarizer-ii1w.vercel.app/
+Demo:https://pdf-summarizer-8n35.vercel.app/
 
 🚀 Features
 🧠 Generate instant summaries for uploaded PDFs
